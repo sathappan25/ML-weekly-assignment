@@ -1,0 +1,501 @@
+Order_ID,Product,Category,City,Quantity,Unit_Price,Total_Sales
+101,Smartphone,Electronics,Hyderabad,5,12450,62250
+102,USB Cable,Accessories,Delhi,2,4550,9100
+103,Television,Electronics,Mumbai,38,11800,448400
+104,Power Bank,Accessories,Hyderabad,12,6750,81000
+105,Webcam,Accessories,Bangalore,34,2950,100300
+106,Television,Electronics,Mumbai,15,26800,402000
+107,External HDD,Electronics,Mumbai,4,13750,55000
+108,Webcam,Accessories,Delhi,18,6950,125100
+109,Laptop Stand,Accessories,Hyderabad,22,5100,112200
+110,Laptop,Electronics,Bangalore,21,14400,302400
+111,Pen Drive,Accessories,Delhi,28,14850,415800
+112,Webcam,Accessories,Chennai,20,4350,87000
+113,Camera,Electronics,Hyderabad,28,7700,215600
+114,Webcam,Accessories,Mumbai,24,10550,253200
+115,Smartphone,Electronics,Delhi,22,20500,451000
+116,WiFi Router,Electronics,Bangalore,3,13950,41850
+117,Printer,Electronics,Chennai,5,10350,51750
+118,Keyboard,Accessories,Mumbai,13,6550,85150
+119,Camera,Electronics,Delhi,18,11100,199800
+120,WiFi Router,Electronics,Bangalore,31,27450,850950
+121,Laptop,Electronics,Hyderabad,20,20950,419000
+122,Smartphone,Electronics,Chennai,20,24750,495000
+123,Laptop,Electronics,Chennai,14,9350,130900
+124,Camera,Electronics,Delhi,39,7150,278850
+125,Smart Watch,Accessories,Chennai,11,14700,161700
+126,Smartphone,Electronics,Mumbai,14,7750,108500
+127,External HDD,Electronics,Bangalore,22,9850,216700
+128,Mouse,Accessories,Bangalore,18,11950,215100
+129,Mouse,Accessories,Bangalore,12,4250,51000
+130,Television,Electronics,Delhi,31,14650,454150
+131,Printer,Electronics,Delhi,40,14900,596000
+132,Camera,Electronics,Bangalore,33,7250,239250
+133,Laptop,Electronics,Mumbai,15,7300,109500
+134,USB Cable,Accessories,Chennai,19,10150,192850
+135,Headphones,Accessories,Delhi,31,13650,423150
+136,Monitor,Electronics,Delhi,22,15950,350900
+137,Portable Projector,Electronics,Delhi,31,21900,678900
+138,Keyboard,Accessories,Hyderabad,18,3450,62100
+139,Pen Drive,Accessories,Chennai,28,6900,193200
+140,USB Cable,Accessories,Delhi,38,9950,378100
+141,Television,Electronics,Bangalore,18,20250,364500
+142,USB Cable,Accessories,Hyderabad,9,11750,105750
+143,Printer,Electronics,Bangalore,31,11450,354950
+144,Power Bank,Accessories,Mumbai,18,6700,120600
+145,USB Cable,Accessories,Chennai,15,6050,90750
+146,Bluetooth Speaker,Accessories,Chennai,36,6700,241200
+147,Keyboard,Accessories,Mumbai,19,9900,188100
+148,Mouse,Accessories,Delhi,30,2200,66000
+149,Printer,Electronics,Chennai,12,16050,192600
+150,Headphones,Accessories,Mumbai,19,9300,176700
+151,Headphones,Accessories,Chennai,36,11100,399600
+152,Headphones,Accessories,Mumbai,40,3850,154000
+153,Mouse,Accessories,Bangalore,4,9150,36600
+154,Laptop,Electronics,Delhi,38,9850,374300
+155,USB Cable,Accessories,Chennai,37,4900,181300
+156,Power Bank,Accessories,Chennai,4,8850,35400
+157,Laptop Stand,Accessories,Delhi,12,9800,117600
+158,Laptop Stand,Accessories,Hyderabad,17,11050,187850
+159,Webcam,Accessories,Hyderabad,34,6300,214200
+160,Laptop Stand,Accessories,Delhi,25,3800,95000
+161,Television,Electronics,Chennai,10,10300,103000
+162,Tablet,Electronics,Hyderabad,35,13200,462000
+163,Monitor,Electronics,Hyderabad,6,13700,82200
+164,Monitor,Electronics,Mumbai,13,10850,141050
+165,Pen Drive,Accessories,Bangalore,12,6350,76200
+166,Pen Drive,Accessories,Hyderabad,15,2400,36000
+167,Smartphone,Electronics,Hyderabad,2,18850,37700
+168,Smart Watch,Accessories,Mumbai,31,10050,311550
+169,Laptop Stand,Accessories,Mumbai,29,2850,82650
+170,Smartphone,Electronics,Chennai,27,16000,432000
+171,Tablet,Electronics,Mumbai,25,12100,302500
+172,Smartphone,Electronics,Bangalore,11,28550,314050
+173,External HDD,Electronics,Hyderabad,36,8850,318600
+174,Laptop,Electronics,Mumbai,11,7400,81400
+175,External HDD,Electronics,Chennai,35,9500,332500
+176,Television,Electronics,Delhi,7,13900,97300
+177,WiFi Router,Electronics,Chennai,24,7950,190800
+178,Pen Drive,Accessories,Chennai,9,11250,101250
+179,Printer,Electronics,Delhi,16,10350,165600
+180,Printer,Electronics,Chennai,3,13550,40650
+181,Webcam,Accessories,Hyderabad,29,10000,290000
+182,Headphones,Accessories,Chennai,7,3350,23450
+183,External HDD,Electronics,Hyderabad,39,28750,1121250
+184,Headphones,Accessories,Hyderabad,32,10600,339200
+185,Smartphone,Electronics,Chennai,11,20900,229900
+186,Keyboard,Accessories,Mumbai,2,12450,24900
+187,Keyboard,Accessories,Mumbai,36,3050,109800
+188,Television,Electronics,Delhi,15,16000,240000
+189,Tablet,Electronics,Mumbai,37,8950,331150
+190,WiFi Router,Electronics,Bangalore,30,21800,654000
+191,Smartphone,Electronics,Hyderabad,3,8950,26850
+192,Tablet,Electronics,Delhi,6,29600,177600
+193,Tablet,Electronics,Hyderabad,21,18700,392700
+194,Television,Electronics,Mumbai,2,14350,28700
+195,Smartphone,Electronics,Bangalore,33,16850,556050
+196,External HDD,Electronics,Bangalore,2,13350,26700
+197,Smart Watch,Accessories,Mumbai,7,10950,76650
+198,Power Bank,Accessories,Bangalore,16,6550,104800
+199,WiFi Router,Electronics,Delhi,10,14850,148500
+200,Power Bank,Accessories,Delhi,24,4350,104400
+201,Pen Drive,Accessories,Hyderabad,14,11900,166600
+202,Monitor,Electronics,Hyderabad,38,29200,1109600
+203,Pen Drive,Accessories,Chennai,26,7700,200200
+204,Tablet,Electronics,Chennai,29,12350,358150
+205,Tablet,Electronics,Mumbai,23,13850,318550
+206,Smart Watch,Accessories,Mumbai,21,10000,210000
+207,Smartphone,Electronics,Delhi,35,14400,504000
+208,Pen Drive,Accessories,Hyderabad,28,8850,247800
+209,Smartphone,Electronics,Bangalore,34,22300,758200
+210,Headphones,Accessories,Mumbai,9,6200,55800
+211,Bluetooth Speaker,Accessories,Delhi,19,10800,205200
+212,Monitor,Electronics,Delhi,23,14000,322000
+213,Printer,Electronics,Mumbai,38,21800,828400
+214,Power Bank,Accessories,Delhi,24,9350,224400
+215,Television,Electronics,Delhi,27,9700,261900
+216,Smartphone,Electronics,Bangalore,2,21550,43100
+217,Bluetooth Speaker,Accessories,Chennai,13,3700,48100
+218,Bluetooth Speaker,Accessories,Chennai,24,7800,187200
+219,Bluetooth Speaker,Accessories,Hyderabad,34,6600,224400
+220,Headphones,Accessories,Delhi,19,10700,203300
+221,Keyboard,Accessories,Bangalore,7,11500,80500
+222,Smart Watch,Accessories,Hyderabad,8,12200,97600
+223,Laptop,Electronics,Chennai,14,20250,283500
+224,USB Cable,Accessories,Bangalore,7,10650,74550
+225,Mouse,Accessories,Bangalore,16,12900,206400
+226,Bluetooth Speaker,Accessories,Mumbai,31,2250,69750
+227,External HDD,Electronics,Chennai,13,18550,241150
+228,USB Cable,Accessories,Chennai,3,11000,33000
+229,Smart Watch,Accessories,Chennai,16,4150,66400
+230,Portable Projector,Electronics,Hyderabad,40,14900,596000
+231,Mouse,Accessories,Delhi,21,9950,208950
+232,USB Cable,Accessories,Mumbai,27,3150,85050
+233,Laptop,Electronics,Bangalore,20,27100,542000
+234,Smartphone,Electronics,Bangalore,6,10950,65700
+235,Keyboard,Accessories,Chennai,8,7000,56000
+236,Bluetooth Speaker,Accessories,Mumbai,23,11600,266800
+237,Headphones,Accessories,Hyderabad,10,6200,62000
+238,Webcam,Accessories,Hyderabad,20,9900,198000
+239,Bluetooth Speaker,Accessories,Hyderabad,31,5500,170500
+240,Printer,Electronics,Bangalore,28,8500,238000
+241,Smart Watch,Accessories,Mumbai,34,3550,120700
+242,Laptop Stand,Accessories,Delhi,16,12050,192800
+243,Portable Projector,Electronics,Delhi,11,12200,134200
+244,Webcam,Accessories,Delhi,20,8550,171000
+245,Monitor,Electronics,Chennai,39,7250,282750
+246,Camera,Electronics,Mumbai,33,16200,534600
+247,USB Cable,Accessories,Chennai,11,4800,52800
+248,Headphones,Accessories,Chennai,13,2950,38350
+249,Smartphone,Electronics,Hyderabad,18,12350,222300
+250,Camera,Electronics,Mumbai,17,25150,427550
+251,Power Bank,Accessories,Mumbai,23,9850,226550
+252,Smart Watch,Accessories,Mumbai,4,6600,26400
+253,Power Bank,Accessories,Chennai,23,7800,179400
+254,Smart Watch,Accessories,Delhi,34,2800,95200
+255,Tablet,Electronics,Bangalore,4,11050,44200
+256,External HDD,Electronics,Delhi,20,8900,178000
+257,USB Cable,Accessories,Mumbai,34,5900,200600
+258,Laptop Stand,Accessories,Bangalore,17,6200,105400
+259,Printer,Electronics,Bangalore,22,24700,543400
+260,Keyboard,Accessories,Mumbai,36,6050,217800
+261,Keyboard,Accessories,Hyderabad,14,6100,85400
+262,WiFi Router,Electronics,Delhi,2,10050,20100
+263,WiFi Router,Electronics,Bangalore,25,29600,740000
+264,Pen Drive,Accessories,Chennai,34,6250,212500
+265,External HDD,Electronics,Mumbai,20,9300,186000
+266,Smartphone,Electronics,Bangalore,26,9900,257400
+267,Smart Watch,Accessories,Delhi,23,6500,149500
+268,Bluetooth Speaker,Accessories,Delhi,12,6350,76200
+269,Monitor,Electronics,Hyderabad,6,12950,77700
+270,Laptop Stand,Accessories,Hyderabad,8,2950,23600
+271,Bluetooth Speaker,Accessories,Bangalore,11,4200,46200
+272,Bluetooth Speaker,Accessories,Chennai,23,9500,218500
+273,Portable Projector,Electronics,Chennai,32,20900,668800
+274,Laptop Stand,Accessories,Bangalore,40,11150,446000
+275,Webcam,Accessories,Chennai,3,3400,10200
+276,Power Bank,Accessories,Delhi,23,9000,207000
+277,Monitor,Electronics,Delhi,3,24000,72000
+278,Mouse,Accessories,Chennai,16,5500,88000
+279,Webcam,Accessories,Delhi,6,14200,85200
+280,Portable Projector,Electronics,Chennai,22,18150,399300
+281,Laptop,Electronics,Hyderabad,20,12700,254000
+282,Power Bank,Accessories,Mumbai,15,7350,110250
+283,Television,Electronics,Chennai,25,18550,463750
+284,Printer,Electronics,Mumbai,21,29550,620550
+285,Television,Electronics,Chennai,19,9350,177650
+286,Mouse,Accessories,Mumbai,20,9350,187000
+287,Printer,Electronics,Hyderabad,25,29000,725000
+288,Bluetooth Speaker,Accessories,Hyderabad,9,6000,54000
+289,Keyboard,Accessories,Chennai,39,4500,175500
+290,Laptop Stand,Accessories,Chennai,3,11450,34350
+291,Monitor,Electronics,Bangalore,3,13950,41850
+292,Printer,Electronics,Chennai,30,21200,636000
+293,Laptop,Electronics,Delhi,19,10150,192850
+294,Tablet,Electronics,Mumbai,9,9800,88200
+295,Pen Drive,Accessories,Delhi,22,6300,138600
+296,Laptop Stand,Accessories,Hyderabad,21,11750,246750
+297,Power Bank,Accessories,Delhi,21,2550,53550
+298,Headphones,Accessories,Chennai,18,5700,102600
+299,Headphones,Accessories,Bangalore,38,11650,442700
+300,External HDD,Electronics,Mumbai,10,8100,81000
+301,External HDD,Electronics,Chennai,3,25350,76050
+302,USB Cable,Accessories,Mumbai,13,5350,69550
+303,Power Bank,Accessories,Bangalore,8,14850,118800
+304,Power Bank,Accessories,Chennai,35,10450,365750
+305,USB Cable,Accessories,Hyderabad,27,6150,166050
+306,Pen Drive,Accessories,Mumbai,39,5100,198900
+307,Laptop Stand,Accessories,Bangalore,34,6650,226100
+308,Webcam,Accessories,Hyderabad,16,8450,135200
+309,WiFi Router,Electronics,Mumbai,10,11900,119000
+310,WiFi Router,Electronics,Mumbai,12,23400,280800
+311,Laptop,Electronics,Delhi,32,12700,406400
+312,Pen Drive,Accessories,Delhi,26,10800,280800
+313,Laptop,Electronics,Mumbai,26,25300,657800
+314,Portable Projector,Electronics,Hyderabad,20,24300,486000
+315,Printer,Electronics,Hyderabad,2,27100,54200
+316,Television,Electronics,Delhi,17,9900,168300
+317,Portable Projector,Electronics,Bangalore,12,20000,240000
+318,Power Bank,Accessories,Delhi,23,11050,254150
+319,Monitor,Electronics,Chennai,4,21350,85400
+320,Webcam,Accessories,Chennai,8,8300,66400
+321,Tablet,Electronics,Bangalore,32,20000,640000
+322,Television,Electronics,Hyderabad,18,10550,189900
+323,Smart Watch,Accessories,Mumbai,29,4450,129050
+324,Smart Watch,Accessories,Mumbai,27,9250,249750
+325,Pen Drive,Accessories,Chennai,3,7500,22500
+326,Television,Electronics,Delhi,36,23000,828000
+327,Webcam,Accessories,Mumbai,27,11750,317250
+328,Portable Projector,Electronics,Chennai,24,28150,675600
+329,Camera,Electronics,Bangalore,23,8350,192050
+330,Pen Drive,Accessories,Chennai,13,4600,59800
+331,Mouse,Accessories,Hyderabad,32,12500,400000
+332,Pen Drive,Accessories,Bangalore,22,13300,292600
+333,Camera,Electronics,Delhi,27,11850,319950
+334,Smart Watch,Accessories,Hyderabad,23,2450,56350
+335,Laptop,Electronics,Chennai,12,16500,198000
+336,Camera,Electronics,Hyderabad,35,26950,943250
+337,WiFi Router,Electronics,Chennai,17,26550,451350
+338,Laptop Stand,Accessories,Mumbai,34,10300,350200
+339,Keyboard,Accessories,Mumbai,38,2400,91200
+340,Bluetooth Speaker,Accessories,Bangalore,2,5650,11300
+341,Monitor,Electronics,Chennai,34,19400,659600
+342,Webcam,Accessories,Bangalore,7,8650,60550
+343,Portable Projector,Electronics,Mumbai,8,13650,109200
+344,Keyboard,Accessories,Mumbai,20,3800,76000
+345,Laptop,Electronics,Bangalore,11,19200,211200
+346,USB Cable,Accessories,Mumbai,20,2500,50000
+347,Mouse,Accessories,Chennai,38,4500,171000
+348,Laptop Stand,Accessories,Hyderabad,16,9600,153600
+349,Television,Electronics,Chennai,33,12850,424050
+350,Bluetooth Speaker,Accessories,Hyderabad,2,5850,11700
+351,Portable Projector,Electronics,Mumbai,9,22550,202950
+352,Camera,Electronics,Mumbai,6,9300,55800
+353,Television,Electronics,Delhi,17,20600,350200
+354,Laptop Stand,Accessories,Mumbai,18,7150,128700
+355,External HDD,Electronics,Mumbai,6,13900,83400
+356,Camera,Electronics,Chennai,28,9550,267400
+357,Smart Watch,Accessories,Bangalore,32,6600,211200
+358,Tablet,Electronics,Hyderabad,33,21400,706200
+359,Bluetooth Speaker,Accessories,Hyderabad,30,5350,160500
+360,External HDD,Electronics,Hyderabad,20,13300,266000
+361,External HDD,Electronics,Hyderabad,14,13000,182000
+362,USB Cable,Accessories,Chennai,4,5150,20600
+363,WiFi Router,Electronics,Delhi,34,13500,459000
+364,Smart Watch,Accessories,Mumbai,33,7500,247500
+365,USB Cable,Accessories,Mumbai,11,10750,118250
+366,Pen Drive,Accessories,Delhi,33,13150,433950
+367,Tablet,Electronics,Chennai,6,26000,156000
+368,Bluetooth Speaker,Accessories,Delhi,31,7350,227850
+369,External HDD,Electronics,Mumbai,40,13750,550000
+370,Headphones,Accessories,Delhi,17,10700,181900
+371,USB Cable,Accessories,Delhi,11,8750,96250
+372,Headphones,Accessories,Mumbai,14,7450,104300
+373,Smart Watch,Accessories,Delhi,31,11800,365800
+374,Printer,Electronics,Hyderabad,2,7350,14700
+375,WiFi Router,Electronics,Mumbai,14,12250,171500
+376,Smartphone,Electronics,Mumbai,24,15150,363600
+377,Camera,Electronics,Chennai,39,20300,791700
+378,Printer,Electronics,Delhi,4,7400,29600
+379,Television,Electronics,Bangalore,28,25850,723800
+380,Power Bank,Accessories,Bangalore,21,3150,66150
+381,Tablet,Electronics,Bangalore,14,12950,181300
+382,USB Cable,Accessories,Mumbai,30,8900,267000
+383,WiFi Router,Electronics,Chennai,9,13400,120600
+384,Pen Drive,Accessories,Mumbai,3,6450,19350
+385,Pen Drive,Accessories,Hyderabad,39,7950,310050
+386,Laptop,Electronics,Hyderabad,7,13700,95900
+387,Portable Projector,Electronics,Chennai,30,20350,610500
+388,Television,Electronics,Mumbai,18,7200,129600
+389,Camera,Electronics,Delhi,35,8400,294000
+390,Smartphone,Electronics,Mumbai,12,12650,151800
+391,Printer,Electronics,Delhi,14,8000,112000
+392,Television,Electronics,Hyderabad,10,16450,164500
+393,Camera,Electronics,Delhi,31,12500,387500
+394,Laptop,Electronics,Hyderabad,9,12450,112050
+395,Headphones,Accessories,Hyderabad,9,4450,40050
+396,Pen Drive,Accessories,Delhi,4,5050,20200
+397,External HDD,Electronics,Delhi,29,7250,210250
+398,Tablet,Electronics,Hyderabad,37,10200,377400
+399,External HDD,Electronics,Chennai,34,17600,598400
+400,Smartphone,Electronics,Chennai,20,20250,405000
+401,Tablet,Electronics,Delhi,37,21100,780700
+402,USB Cable,Accessories,Hyderabad,40,2500,100000
+403,Smartphone,Electronics,Hyderabad,40,21600,864000
+404,Webcam,Accessories,Delhi,27,6800,183600
+405,Smart Watch,Accessories,Chennai,39,6800,265200
+406,Bluetooth Speaker,Accessories,Delhi,11,5250,57750
+407,WiFi Router,Electronics,Hyderabad,2,24400,48800
+408,Headphones,Accessories,Mumbai,22,11050,243100
+409,Power Bank,Accessories,Chennai,36,8200,295200
+410,Keyboard,Accessories,Hyderabad,7,10400,72800
+411,Portable Projector,Electronics,Delhi,33,14800,488400
+412,Webcam,Accessories,Hyderabad,11,3300,36300
+413,Tablet,Electronics,Delhi,37,8200,303400
+414,External HDD,Electronics,Hyderabad,10,13300,133000
+415,Bluetooth Speaker,Accessories,Hyderabad,32,5400,172800
+416,Printer,Electronics,Delhi,12,28100,337200
+417,Smartphone,Electronics,Mumbai,17,15650,266050
+418,Bluetooth Speaker,Accessories,Chennai,23,2750,63250
+419,Laptop,Electronics,Chennai,8,10600,84800
+420,Printer,Electronics,Chennai,17,21900,372300
+421,USB Cable,Accessories,Chennai,37,13450,497650
+422,Tablet,Electronics,Chennai,22,20300,446600
+423,Webcam,Accessories,Delhi,9,10200,91800
+424,Laptop,Electronics,Hyderabad,36,11550,415800
+425,Power Bank,Accessories,Mumbai,7,3150,22050
+426,Monitor,Electronics,Mumbai,35,19800,693000
+427,Power Bank,Accessories,Delhi,2,7150,14300
+428,Headphones,Accessories,Chennai,35,8750,306250
+429,Smart Watch,Accessories,Mumbai,27,7500,202500
+430,Monitor,Electronics,Mumbai,19,17150,325850
+431,Pen Drive,Accessories,Mumbai,14,7750,108500
+432,Headphones,Accessories,Mumbai,39,8200,319800
+433,Power Bank,Accessories,Mumbai,37,4300,159100
+434,Laptop Stand,Accessories,Hyderabad,17,3350,56950
+435,Keyboard,Accessories,Bangalore,11,11750,129250
+436,Headphones,Accessories,Hyderabad,31,10350,320850
+437,WiFi Router,Electronics,Delhi,26,14850,386100
+438,Tablet,Electronics,Delhi,30,20800,624000
+439,Mouse,Accessories,Chennai,38,10900,414200
+440,Power Bank,Accessories,Chennai,27,5900,159300
+441,Mouse,Accessories,Mumbai,8,2700,21600
+442,Keyboard,Accessories,Delhi,31,11900,368900
+443,Television,Electronics,Bangalore,34,21000,714000
+444,WiFi Router,Electronics,Chennai,29,14000,406000
+445,Laptop Stand,Accessories,Delhi,40,9100,364000
+446,Mouse,Accessories,Delhi,12,11300,135600
+447,WiFi Router,Electronics,Mumbai,25,14400,360000
+448,Smartphone,Electronics,Bangalore,12,9200,110400
+449,Smart Watch,Accessories,Chennai,14,5650,79100
+450,Tablet,Electronics,Mumbai,32,14500,464000
+451,Television,Electronics,Delhi,28,14450,404600
+452,Tablet,Electronics,Mumbai,30,13450,403500
+453,Webcam,Accessories,Delhi,38,2900,110200
+454,Camera,Electronics,Bangalore,33,15900,524700
+455,WiFi Router,Electronics,Delhi,6,16500,99000
+456,Keyboard,Accessories,Bangalore,35,11750,411250
+457,Smart Watch,Accessories,Delhi,31,10750,333250
+458,Portable Projector,Electronics,Hyderabad,35,24400,854000
+459,USB Cable,Accessories,Chennai,15,8300,124500
+460,Mouse,Accessories,Hyderabad,28,6200,173600
+461,Laptop Stand,Accessories,Bangalore,25,13750,343750
+462,Tablet,Electronics,Hyderabad,3,7350,22050
+463,Power Bank,Accessories,Hyderabad,18,2800,50400
+464,Mouse,Accessories,Chennai,14,6800,95200
+465,Bluetooth Speaker,Accessories,Delhi,14,5550,77700
+466,Headphones,Accessories,Mumbai,17,8450,143650
+467,External HDD,Electronics,Mumbai,32,14950,478400
+468,External HDD,Electronics,Bangalore,9,17350,156150
+469,Keyboard,Accessories,Chennai,36,9350,336600
+470,Camera,Electronics,Mumbai,7,14500,101500
+471,Bluetooth Speaker,Accessories,Mumbai,15,3500,52500
+472,Television,Electronics,Delhi,25,25800,645000
+473,Keyboard,Accessories,Bangalore,37,8550,316350
+474,Laptop,Electronics,Delhi,36,18950,682200
+475,WiFi Router,Electronics,Chennai,18,21300,383400
+476,Headphones,Accessories,Delhi,13,13400,174200
+477,Printer,Electronics,Bangalore,4,14550,58200
+478,Laptop Stand,Accessories,Chennai,38,11550,438900
+479,Headphones,Accessories,Bangalore,12,6700,80400
+480,Power Bank,Accessories,Hyderabad,22,5600,123200
+481,Laptop Stand,Accessories,Delhi,20,14250,285000
+482,Camera,Electronics,Chennai,17,21150,359550
+483,Laptop Stand,Accessories,Chennai,15,10200,153000
+484,Camera,Electronics,Mumbai,36,20900,752400
+485,Monitor,Electronics,Delhi,35,12000,420000
+486,Webcam,Accessories,Hyderabad,37,5050,186850
+487,Laptop,Electronics,Mumbai,14,8800,123200
+488,Webcam,Accessories,Delhi,7,4300,30100
+489,Smart Watch,Accessories,Mumbai,6,6700,40200
+490,Keyboard,Accessories,Mumbai,29,12450,361050
+491,Portable Projector,Electronics,Bangalore,31,28500,883500
+492,WiFi Router,Electronics,Mumbai,30,11350,340500
+493,Monitor,Electronics,Mumbai,30,15150,454500
+494,Smart Watch,Accessories,Bangalore,23,14750,339250
+495,Portable Projector,Electronics,Bangalore,2,17900,35800
+496,Television,Electronics,Bangalore,31,21950,680450
+497,Laptop,Electronics,Delhi,23,13850,318550
+498,External HDD,Electronics,Chennai,38,17200,653600
+499,Smart Watch,Accessories,Mumbai,19,13450,255550
+500,Bluetooth Speaker,Accessories,Hyderabad,19,5700,108300
+501,Headphones,Accessories,Delhi,29,6850,198650
+502,Printer,Electronics,Mumbai,10,9400,94000
+503,External HDD,Electronics,Mumbai,38,28300,1075400
+504,Smartphone,Electronics,Hyderabad,23,12800,294400
+505,WiFi Router,Electronics,Mumbai,10,7050,70500
+506,Camera,Electronics,Mumbai,14,13600,190400
+507,Monitor,Electronics,Mumbai,21,14400,302400
+508,Laptop,Electronics,Delhi,17,26250,446250
+509,Portable Projector,Electronics,Mumbai,30,21950,658500
+510,Mouse,Accessories,Mumbai,30,11500,345000
+511,Mouse,Accessories,Hyderabad,17,5900,100300
+512,USB Cable,Accessories,Hyderabad,19,3350,63650
+513,Bluetooth Speaker,Accessories,Chennai,27,14150,382050
+514,Smartphone,Electronics,Delhi,32,8000,256000
+515,Keyboard,Accessories,Delhi,18,5050,90900
+516,Portable Projector,Electronics,Chennai,21,25900,543900
+517,Portable Projector,Electronics,Chennai,22,17100,376200
+518,Power Bank,Accessories,Hyderabad,37,3550,131350
+519,USB Cable,Accessories,Mumbai,25,4900,122500
+520,Portable Projector,Electronics,Bangalore,2,21150,42300
+521,Mouse,Accessories,Chennai,9,11150,100350
+522,Smartphone,Electronics,Chennai,11,27950,307450
+523,Tablet,Electronics,Bangalore,25,14400,360000
+524,Pen Drive,Accessories,Chennai,32,2400,76800
+525,Portable Projector,Electronics,Bangalore,31,27750,860250
+526,Keyboard,Accessories,Mumbai,39,7900,308100
+527,Power Bank,Accessories,Bangalore,24,2250,54000
+528,Webcam,Accessories,Delhi,30,5850,175500
+529,Monitor,Electronics,Bangalore,19,14950,284050
+530,External HDD,Electronics,Mumbai,23,12450,286350
+531,Camera,Electronics,Mumbai,4,25850,103400
+532,Mouse,Accessories,Chennai,34,9300,316200
+533,Portable Projector,Electronics,Hyderabad,16,12450,199200
+534,Monitor,Electronics,Chennai,8,7650,61200
+535,Headphones,Accessories,Hyderabad,38,3500,133000
+536,Printer,Electronics,Chennai,19,19800,376200
+537,Television,Electronics,Hyderabad,36,11350,408600
+538,Mouse,Accessories,Hyderabad,13,11400,148200
+539,USB Cable,Accessories,Mumbai,4,3600,14400
+540,Printer,Electronics,Delhi,6,23150,138900
+541,Laptop Stand,Accessories,Mumbai,21,2650,55650
+542,External HDD,Electronics,Bangalore,39,13600,530400
+543,Monitor,Electronics,Delhi,39,12150,473850
+544,Smart Watch,Accessories,Hyderabad,7,4250,29750
+545,WiFi Router,Electronics,Chennai,25,10550,263750
+546,Tablet,Electronics,Mumbai,24,10750,258000
+547,Webcam,Accessories,Delhi,5,9800,49000
+548,Camera,Electronics,Hyderabad,9,14450,130050
+549,Laptop,Electronics,Bangalore,23,19450,447350
+550,Portable Projector,Electronics,Delhi,34,13650,464100
+551,USB Cable,Accessories,Mumbai,33,6650,219450
+552,Webcam,Accessories,Mumbai,39,2750,107250
+553,Monitor,Electronics,Bangalore,7,7850,54950
+554,Keyboard,Accessories,Delhi,14,7100,99400
+555,Camera,Electronics,Delhi,32,9550,305600
+556,Webcam,Accessories,Delhi,6,2550,15300
+557,Printer,Electronics,Hyderabad,13,26150,339950
+558,Pen Drive,Accessories,Bangalore,38,2550,96900
+559,Camera,Electronics,Bangalore,14,21800,305200
+560,Bluetooth Speaker,Accessories,Mumbai,20,6700,134000
+561,Pen Drive,Accessories,Delhi,33,2000,66000
+562,Laptop Stand,Accessories,Mumbai,14,6750,94500
+563,Laptop Stand,Accessories,Delhi,27,6550,176850
+564,Television,Electronics,Mumbai,30,18500,555000
+565,Power Bank,Accessories,Chennai,12,3650,43800
+566,Tablet,Electronics,Bangalore,34,24400,829600
+567,Mouse,Accessories,Delhi,20,10700,214000
+568,Monitor,Electronics,Hyderabad,37,16500,610500
+569,Portable Projector,Electronics,Hyderabad,10,20000,200000
+570,Keyboard,Accessories,Delhi,37,4550,168350
+571,Camera,Electronics,Bangalore,36,9750,351000
+572,Monitor,Electronics,Chennai,13,23900,310700
+573,Mouse,Accessories,Mumbai,39,9650,376350
+574,Printer,Electronics,Hyderabad,9,8050,72450
+575,Monitor,Electronics,Chennai,32,7850,251200
+576,Monitor,Electronics,Mumbai,14,25050,350700
+577,Monitor,Electronics,Mumbai,18,14000,252000
+578,External HDD,Electronics,Delhi,5,7350,36750
+579,WiFi Router,Electronics,Bangalore,24,7700,184800
+580,Pen Drive,Accessories,Chennai,14,3800,53200
+581,Keyboard,Accessories,Mumbai,33,7200,237600
+582,Mouse,Accessories,Delhi,6,4150,24900
+583,Portable Projector,Electronics,Mumbai,20,8600,172000
+584,Pen Drive,Accessories,Mumbai,38,4050,153900
+585,Tablet,Electronics,Hyderabad,16,13750,220000
+586,Bluetooth Speaker,Accessories,Bangalore,5,10600,53000
+587,WiFi Router,Electronics,Delhi,31,8850,274350
+588,Laptop,Electronics,Chennai,25,7400,185000
+589,Webcam,Accessories,Mumbai,22,5750,126500
+590,Camera,Electronics,Mumbai,34,22650,770100
+591,Mouse,Accessories,Hyderabad,39,9200,358800
+592,Portable Projector,Electronics,Hyderabad,3,22050,66150
+593,Keyboard,Accessories,Delhi,2,6000,12000
+594,Laptop Stand,Accessories,Chennai,20,6550,131000
+595,Mouse,Accessories,Delhi,5,14950,74750
+596,Smart Watch,Accessories,Mumbai,13,2750,35750
+597,Laptop,Electronics,Bangalore,37,10950,405150
+598,WiFi Router,Electronics,Bangalore,2,16550,33100
+599,Printer,Electronics,Mumbai,26,19600,509600
+600,Headphones,Accessories,Hyderabad,33,11000,363000
