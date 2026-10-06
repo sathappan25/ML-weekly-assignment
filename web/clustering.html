@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K-Means, Gaussian Mixture and Hierarchical Clustering | Unit 3 Mini Project</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header"><div class="inner"><a class="brand" href="index.html">Unit 3 Mini Project</a><nav><a href="index.html">Home</a><a href="clustering.html" class="active">Clustering</a><a href="pca.html">PCA</a></nav></div></header>
+<main>
+<section class="page-hero">
+<p class="eyebrow">Retail Sales Insights Using Clustering and PCA</p>
+<h1>K-Means, Gaussian Mixture and Hierarchical Clustering</h1>
+<div class="intro"><p><strong>Dataset:</strong> <code>store_sales_dataset.csv</code></p>
+<p>We group the orders into clusters using <code>Quantity</code> and <code>Unit_Price</code> with three unsupervised algorithms:</p>
+<ol>
+<li><strong>K-Means</strong></li>
+<li><strong>Gaussian Mixture Model</strong> (mixture of Gaussians)</li>
+<li><strong>Hierarchical (Agglomerative) Clustering</strong></li>
+</ol>
+<p><code>Category</code> is <strong>not</strong> used for training. It is only used afterwards to check how well the clusters match the real categories.</p></div>
+<nav class="toc"><a href="#clustering-1-import-libraries">Import libraries</a><a href="#clustering-2-load-data">Load data</a><a href="#clustering-3-prepare-and-standardize-the-features">Prepare and standardize the features</a><a href="#clustering-4-choosing-the-number-of-clusters-elbow-method-silhouette-score">Choosing the number of clusters (Elbow method + Silhouette score)</a><a href="#clustering-5-k-means-clustering">K-Means clustering</a><a href="#clustering-6-gaussian-mixture-model">Gaussian Mixture Model</a><a href="#clustering-7-hierarchical-agglomerative-clustering-with-ward-linkage">Hierarchical (Agglomerative) clustering with Ward linkage</a><a href="#clustering-8-evaluation-and-comparison">Evaluation and comparison</a><a href="#clustering-9-sample-prediction-new-data-point">Sample prediction (new data point)</a></nav>
+</section>
+<section class="card"><h2 id="clustering-1-import-libraries">1. Import libraries</h2>
+<details class="code"><summary>Show code</summary><pre><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import linkage, dendrogram
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans, AgglomerativeClustering
+from sklearn.mixture import GaussianMixture
+from sklearn.metrics import silhouette_score, adjusted_rand_score
+
+%matplotlib inline</code></pre></details></section><section class="card"><h2 id="clustering-2-load-data">2. Load data</h2>
+<details class="code"><summary>Show code</summary><pre><code>df = pd.read_csv(&quot;store_sales_dataset.csv&quot;)
+print(f&quot;Dataset size: {len(df)} rows&quot;)
+df.head()</code></pre></details>
+<pre class="output">Dataset size: 500 rows</pre>
+<div class="table-wrap"><div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Order_ID</th>
+      <th>Product</th>
+      <th>Category</th>
+      <th>City</th>
+      <th>Quantity</th>
+      <th>Unit_Price</th>
+      <th>Total_Sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>101</td>
+      <td>Smartphone</td>
+      <td>Electronics</td>
+      <td>Hyderabad</td>
+      <td>5</td>
+      <td>12450</td>
+      <td>62250</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>102</td>
+      <td>USB Cable</td>
+      <td>Accessories</td>
+      <td>Delhi</td>
+      <td>2</td>
+      <td>4550</td>
+      <td>9100</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>103</td>
+      <td>Television</td>
+      <td>Electronics</td>
+      <td>Mumbai</td>
+      <td>38</td>
+      <td>11800</td>
+      <td>448400</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>104</td>
+      <td>Power Bank</td>
+      <td>Accessories</td>
+      <td>Hyderabad</td>
+      <td>12</td>
+      <td>6750</td>
+      <td>81000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>105</td>
+      <td>Webcam</td>
+      <td>Accessories</td>
+      <td>Bangalore</td>
+      <td>34</td>
+      <td>2950</td>
+      <td>100300</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></section><section class="card"><h2 id="clustering-3-prepare-and-standardize-the-features">3. Prepare and standardize the features</h2>
+<p>Both features are standardized (mean = 0, std = 1) so they have equal weight.</p>
+<details class="code"><summary>Show code</summary><pre><code>features = [&quot;Quantity&quot;, &quot;Unit_Price&quot;]
+X = df[features]
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+print(f&quot;Features used for clustering: {features}&quot;)</code></pre></details>
+<pre class="output">Features used for clustering: [&#x27;Quantity&#x27;, &#x27;Unit_Price&#x27;]</pre></section><section class="card"><h2 id="clustering-4-choosing-the-number-of-clusters-elbow-method-silhouette-score">4. Choosing the number of clusters (Elbow method + Silhouette score)</h2>
+<details class="code"><summary>Show code</summary><pre><code>k_values = range(2, 9)
+inertias = []
+silhouettes = []
+
+print(f&quot;  {&#x27;k&#x27;:&gt;3} {&#x27;Inertia&#x27;:&gt;12} {&#x27;Silhouette&#x27;:&gt;12}&quot;)
+for k in k_values:
+    km = KMeans(n_clusters=k, n_init=10, random_state=42)
+    labels = km.fit_predict(X_scaled)
+    inertias.append(km.inertia_)
+    silhouettes.append(silhouette_score(X_scaled, labels))
+    print(f&quot;  {k:&gt;3} {km.inertia_:&gt;12.2f} {silhouettes[-1]:&gt;12.4f}&quot;)
+
+best_k = list(k_values)[int(np.argmax(silhouettes))]
+print(f&quot;\nBest k by silhouette score: {best_k}&quot;)</code></pre></details>
+<pre class="output">    k      Inertia   Silhouette
+    2       626.59       0.3675
+    3       351.55       0.4355
+    4       281.85       0.4012
+    5       224.62       0.3603
+    6       179.95       0.3845
+    7       150.08       0.3789
+    8       129.58       0.3745
+
+Best k by silhouette score: 3</pre></section><section class="card"><h2 id="clustering-5-k-means-clustering">5. K-Means clustering</h2>
+<details class="code"><summary>Show code</summary><pre><code>kmeans = KMeans(n_clusters=best_k, n_init=10, random_state=42)
+kmeans_labels = kmeans.fit_predict(X_scaled)
+
+centers = scaler.inverse_transform(kmeans.cluster_centers_)
+print(f&quot;K-Means (k = {best_k}) cluster centers (original units):&quot;)
+pd.DataFrame(centers, columns=features).round(2)</code></pre></details>
+<pre class="output">K-Means (k = 3) cluster centers (original units):</pre>
+<div class="table-wrap"><div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Quantity</th>
+      <th>Unit_Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.66</td>
+      <td>9172.56</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>31.35</td>
+      <td>9214.06</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>21.72</td>
+      <td>23048.92</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<h3>Graph: K-Means clusters</h3>
+<details class="code"><summary>Show code</summary><pre><code>plt.figure(figsize=(9, 6))
+plt.scatter(
+    df[&quot;Unit_Price&quot;],
+    df[&quot;Quantity&quot;],
+    c=kmeans_labels,
+    cmap=&quot;viridis&quot;,
+    edgecolor=&quot;black&quot;,
+    s=40,
+    alpha=0.8,
+)
+plt.scatter(
+    centers[:, 1],
+    centers[:, 0],
+    color=&quot;red&quot;,
+    marker=&quot;X&quot;,
+    s=250,
+    edgecolor=&quot;black&quot;,
+    label=&quot;Centroids&quot;,
+)
+plt.xlabel(&quot;Unit_Price&quot;)
+plt.ylabel(&quot;Quantity&quot;)
+plt.title(f&quot;K-Means Clustering (k = {best_k}): Unit_Price vs Quantity&quot;)
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()</code></pre></details>
+<figure><img src="images/clustering_fig1.png" alt="Figure 1" loading="lazy"></figure></section><section class="card"><h2 id="clustering-6-gaussian-mixture-model">6. Gaussian Mixture Model</h2>
+<details class="code"><summary>Show code</summary><pre><code>gmm = GaussianMixture(n_components=best_k, covariance_type=&quot;full&quot;, random_state=42)
+gmm.fit(X_scaled)
+gmm_labels = gmm.predict(X_scaled)
+gmm_probs = gmm.predict_proba(X_scaled)
+
+print(&quot;Mixture weights:&quot;)
+for i, w in enumerate(gmm.weights_):
+    print(f&quot;  Component {i}: {w:.4f}&quot;)
+
+gmm_means = scaler.inverse_transform(gmm.means_)
+print(&quot;\nComponent means (original units):&quot;)
+print(pd.DataFrame(gmm_means, columns=features).round(2).to_string())
+
+print(f&quot;\nConverged: {gmm.converged_}&quot;)
+print(f&quot;Log-likelihood (per sample): {gmm.score(X_scaled):.4f}&quot;)
+print(f&quot;BIC: {gmm.bic(X_scaled):.2f}&quot;)
+print(f&quot;AIC: {gmm.aic(X_scaled):.2f}&quot;)</code></pre></details>
+<pre class="output">Mixture weights:
+  Component 0: 0.4446
+  Component 1: 0.3718
+  Component 2: 0.1836
+
+Component means (original units):
+   Quantity  Unit_Price
+0     12.39     9036.62
+1     31.30     9540.81
+2     21.50    22903.59
+
+Converged: True
+Log-likelihood (per sample): -2.6536
+BIC: 2759.27
+AIC: 2687.62</pre>
+<h3>Soft assignments: membership probabilities (first 10 rows)</h3>
+<details class="code"><summary>Show code</summary><pre><code>prob_df = pd.DataFrame(
+    np.round(gmm_probs, 4),
+    columns=[f&quot;P(Comp {i})&quot; for i in range(best_k)],
+)
+prob_df.insert(0, &quot;Unit_Price&quot;, df[&quot;Unit_Price&quot;].values)
+prob_df.insert(0, &quot;Quantity&quot;, df[&quot;Quantity&quot;].values)
+prob_df.head(10)</code></pre></details>
+<div class="table-wrap"><div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Quantity</th>
+      <th>Unit_Price</th>
+      <th>P(Comp 0)</th>
+      <th>P(Comp 1)</th>
+      <th>P(Comp 2)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5</td>
+      <td>12450</td>
+      <td>0.9969</td>
+      <td>0.0001</td>
+      <td>0.0030</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>4550</td>
+      <td>1.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>11800</td>
+      <td>0.0005</td>
+      <td>0.9962</td>
+      <td>0.0033</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>12</td>
+      <td>6750</td>
+      <td>0.9981</td>
+      <td>0.0019</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>34</td>
+      <td>2950</td>
+      <td>0.0083</td>
+      <td>0.9917</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>15</td>
+      <td>26800</td>
+      <td>0.0001</td>
+      <td>0.0001</td>
+      <td>0.9998</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>4</td>
+      <td>13750</td>
+      <td>0.9893</td>
+      <td>0.0001</td>
+      <td>0.0106</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>18</td>
+      <td>6950</td>
+      <td>0.9436</td>
+      <td>0.0563</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>22</td>
+      <td>5100</td>
+      <td>0.7171</td>
+      <td>0.2829</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>21</td>
+      <td>14400</td>
+      <td>0.4475</td>
+      <td>0.4848</td>
+      <td>0.0677</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<h3>Graph: Gaussian Mixture clusters</h3>
+<details class="code"><summary>Show code</summary><pre><code>plt.figure(figsize=(9, 6))
+plt.scatter(
+    df[&quot;Unit_Price&quot;],
+    df[&quot;Quantity&quot;],
+    c=gmm_labels,
+    cmap=&quot;viridis&quot;,
+    edgecolor=&quot;black&quot;,
+    s=40,
+    alpha=0.8,
+)
+plt.scatter(
+    gmm_means[:, 1],
+    gmm_means[:, 0],
+    color=&quot;red&quot;,
+    marker=&quot;X&quot;,
+    s=250,
+    edgecolor=&quot;black&quot;,
+    label=&quot;Gaussian Means&quot;,
+)
+plt.xlabel(&quot;Unit_Price&quot;)
+plt.ylabel(&quot;Quantity&quot;)
+plt.title(f&quot;Gaussian Mixture Model ({best_k} components): Unit_Price vs Quantity&quot;)
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()</code></pre></details>
+<figure><img src="images/clustering_fig2.png" alt="Figure 2" loading="lazy"></figure></section><section class="card"><h2 id="clustering-7-hierarchical-agglomerative-clustering-with-ward-linkage">7. Hierarchical (Agglomerative) clustering with Ward linkage</h2>
+<details class="code"><summary>Show code</summary><pre><code>hier = AgglomerativeClustering(n_clusters=best_k, linkage=&quot;ward&quot;)
+hier_labels = hier.fit_predict(X_scaled)
+print(f&quot;Hierarchical clustering done with k = {best_k}&quot;)</code></pre></details>
+<pre class="output">Hierarchical clustering done with k = 3</pre>
+<h3>Graph 1: Dendrogram</h3>
+<details class="code"><summary>Show code</summary><pre><code>linkage_matrix = linkage(X_scaled, method=&quot;ward&quot;)
+plt.figure(figsize=(12, 5))
+dendrogram(linkage_matrix, truncate_mode=&quot;lastp&quot;, p=30, leaf_rotation=90)
+plt.xlabel(&quot;Sample index (or cluster size)&quot;)
+plt.ylabel(&quot;Distance&quot;)
+plt.title(&quot;Hierarchical Clustering Dendrogram (Ward linkage)&quot;)
+plt.tight_layout()
+plt.show()</code></pre></details>
+<figure><img src="images/clustering_fig3.png" alt="Figure 3" loading="lazy"></figure>
+<h3>Graph 2: Hierarchical clusters</h3>
+<details class="code"><summary>Show code</summary><pre><code>plt.figure(figsize=(9, 6))
+plt.scatter(
+    df[&quot;Unit_Price&quot;],
+    df[&quot;Quantity&quot;],
+    c=hier_labels,
+    cmap=&quot;viridis&quot;,
+    edgecolor=&quot;black&quot;,
+    s=40,
+    alpha=0.8,
+)
+plt.xlabel(&quot;Unit_Price&quot;)
+plt.ylabel(&quot;Quantity&quot;)
+plt.title(f&quot;Hierarchical Clustering (Ward, k = {best_k}): Unit_Price vs Quantity&quot;)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()</code></pre></details>
+<figure><img src="images/clustering_fig4.png" alt="Figure 4" loading="lazy"></figure></section><section class="card"><h2 id="clustering-8-evaluation-and-comparison">8. Evaluation and comparison</h2>
+<ul>
+<li><strong>Silhouette score:</strong> cluster quality (higher is better, max 1)</li>
+<li><strong>Adjusted Rand Index (ARI):</strong> agreement with the real <code>Category</code> (1 = perfect, 0 = random)</li>
+</ul>
+<details class="code"><summary>Show code</summary><pre><code>results = {
+    &quot;K-Means&quot;: kmeans_labels,
+    &quot;Gaussian Mixture&quot;: gmm_labels,
+    &quot;Hierarchical&quot;: hier_labels,
+}
+
+rows = []
+for name, labels in results.items():
+    rows.append({
+        &quot;Algorithm&quot;: name,
+        &quot;Silhouette&quot;: round(silhouette_score(X_scaled, labels), 4),
+        &quot;ARI vs Category&quot;: round(adjusted_rand_score(df[&quot;Category&quot;], labels), 4),
+    })
+scores_df = pd.DataFrame(rows)
+scores_df</code></pre></details>
+<div class="table-wrap"><div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Algorithm</th>
+      <th>Silhouette</th>
+      <th>ARI vs Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>K-Means</td>
+      <td>0.4355</td>
+      <td>0.1016</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Gaussian Mixture</td>
+      <td>0.4330</td>
+      <td>0.1049</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Hierarchical</td>
+      <td>0.3873</td>
+      <td>0.0802</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<details class="code"><summary>Show code</summary><pre><code>for name, labels in results.items():
+    print(f&quot;\n{name} - cluster sizes and Category breakdown:&quot;)
+    print(pd.crosstab(labels, df[&quot;Category&quot;], rownames=[&quot;Cluster&quot;]).to_string())</code></pre></details>
+<pre class="output">K-Means - cluster sizes and Category breakdown:
+Category  Accessories  Electronics
+Cluster                           
+0                 132           83
+1                 118           74
+2                   0           93
+
+Gaussian Mixture - cluster sizes and Category breakdown:
+Category  Accessories  Electronics
+Cluster                           
+0                 142           81
+1                 108           76
+2                   0           93
+
+Hierarchical - cluster sizes and Category breakdown:
+Category  Accessories  Electronics
+Cluster                           
+0                 169          118
+1                   0           82
+2                  81           50</pre>
+<h3>Graph: Silhouette and ARI comparison</h3>
+<details class="code"><summary>Show code</summary><pre><code>x = np.arange(len(scores_df))
+width = 0.35
+
+plt.figure(figsize=(9, 5))
+plt.bar(x - width / 2, scores_df[&quot;Silhouette&quot;], width, label=&quot;Silhouette&quot;,
+        color=&quot;steelblue&quot;, edgecolor=&quot;black&quot;)
+plt.bar(x + width / 2, scores_df[&quot;ARI vs Category&quot;], width, label=&quot;ARI vs Category&quot;,
+        color=&quot;darkorange&quot;, edgecolor=&quot;black&quot;)
+plt.xticks(x, scores_df[&quot;Algorithm&quot;])
+plt.ylabel(&quot;Score&quot;)
+plt.title(&quot;Clustering Algorithm Comparison&quot;)
+plt.legend()
+plt.grid(True, axis=&quot;y&quot;, alpha=0.3)
+plt.tight_layout()
+plt.show()</code></pre></details>
+<figure><img src="images/clustering_fig5.png" alt="Figure 5" loading="lazy"></figure></section><section class="card"><h2 id="clustering-9-sample-prediction-new-data-point">9. Sample prediction (new data point)</h2>
+<details class="code"><summary>Show code</summary><pre><code>sample = pd.DataFrame({&quot;Quantity&quot;: [10], &quot;Unit_Price&quot;: [20000]})
+sample_scaled = scaler.transform(sample)
+
+print(&quot;Quantity=10, Unit_Price=20000&quot;)
+print(f&quot;  K-Means cluster:          {kmeans.predict(sample_scaled)[0]}&quot;)
+print(f&quot;  Gaussian Mixture cluster: {gmm.predict(sample_scaled)[0]}&quot;)
+print(f&quot;  GMM probabilities:        {np.round(gmm.predict_proba(sample_scaled)[0], 4)}&quot;)</code></pre></details>
+<pre class="output">Quantity=10, Unit_Price=20000
+  K-Means cluster:          2
+  Gaussian Mixture cluster: 2
+  GMM probabilities:        [0.1529 0.0013 0.8458]</pre></section>
+</main>
+<footer class="site-footer">Unit 3 Mini Project &middot; Retail Sales Insights Using Clustering and PCA</footer>
+</body>
+</html>

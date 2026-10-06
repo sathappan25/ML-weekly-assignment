@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Principal Component Analysis (PCA) | Unit 3 Mini Project</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header"><div class="inner"><a class="brand" href="index.html">Unit 3 Mini Project</a><nav><a href="index.html">Home</a><a href="clustering.html">Clustering</a><a href="pca.html" class="active">PCA</a></nav></div></header>
+<main>
+<section class="page-hero">
+<p class="eyebrow">Retail Sales Insights Using Clustering and PCA</p>
+<h1>Principal Component Analysis (PCA)</h1>
+<div class="intro"><p><strong>Dataset:</strong> <code>store_sales_dataset.csv</code></p>
+<p>We reduce the dimensionality of the data with <strong>PCA</strong>:</p>
+<ol>
+<li>PCA <strong>from scratch</strong> (covariance matrix + eigen decomposition with NumPy)</li>
+<li>PCA with <strong>scikit-learn</strong> (to verify the manual result)</li>
+</ol>
+<p>We then look at the explained variance, component loadings, reconstruction error and a 2D projection of the data.</p></div>
+<nav class="toc"><a href="#pca-1-import-libraries">Import libraries</a><a href="#pca-2-load-data">Load data</a><a href="#pca-3-prepare-features-numerical-columns-one-hot-encoded-city">Prepare features (numerical columns + one-hot encoded City)</a><a href="#pca-4-standardize-the-data-pca-is-sensitive-to-scale">Standardize the data (PCA is sensitive to scale)</a><a href="#pca-5-pca-from-scratch-covariance-matrix-eigen-decomposition">PCA from scratch (Covariance matrix + Eigen decomposition)</a><a href="#pca-6-pca-using-scikit-learn-verification">PCA using scikit-learn (verification)</a><a href="#pca-7-transformed-data-and-reconstruction-error">Transformed data and reconstruction error</a><a href="#pca-8-graph-data-projected-onto-pc1-and-pc2">Graph: data projected onto PC1 and PC2</a></nav>
+</section>
+<section class="card"><h2 id="pca-1-import-libraries">1. Import libraries</h2>
+<details class="code"><summary>Show code</summary><pre><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+%matplotlib inline</code></pre></details></section><section class="card"><h2 id="pca-2-load-data">2. Load data</h2>
+<details class="code"><summary>Show code</summary><pre><code>df = pd.read_csv(&quot;store_sales_dataset.csv&quot;)
+print(f&quot;Dataset size: {len(df)} rows&quot;)
+df.head()</code></pre></details>
+<pre class="output">Dataset size: 500 rows</pre>
+<div class="table-wrap"><div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Order_ID</th>
+      <th>Product</th>
+      <th>Category</th>
+      <th>City</th>
+      <th>Quantity</th>
+      <th>Unit_Price</th>
+      <th>Total_Sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>101</td>
+      <td>Smartphone</td>
+      <td>Electronics</td>
+      <td>Hyderabad</td>
+      <td>5</td>
+      <td>12450</td>
+      <td>62250</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>102</td>
+      <td>USB Cable</td>
+      <td>Accessories</td>
+      <td>Delhi</td>
+      <td>2</td>
+      <td>4550</td>
+      <td>9100</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>103</td>
+      <td>Television</td>
+      <td>Electronics</td>
+      <td>Mumbai</td>
+      <td>38</td>
+      <td>11800</td>
+      <td>448400</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>104</td>
+      <td>Power Bank</td>
+      <td>Accessories</td>
+      <td>Hyderabad</td>
+      <td>12</td>
+      <td>6750</td>
+      <td>81000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>105</td>
+      <td>Webcam</td>
+      <td>Accessories</td>
+      <td>Bangalore</td>
+      <td>34</td>
+      <td>2950</td>
+      <td>100300</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></section><section class="card"><h2 id="pca-3-prepare-features-numerical-columns-one-hot-encoded-city">3. Prepare features (numerical columns + one-hot encoded City)</h2>
+<details class="code"><summary>Show code</summary><pre><code>numeric_features = [&quot;Quantity&quot;, &quot;Unit_Price&quot;, &quot;Total_Sales&quot;]
+X = pd.concat(
+    [df[numeric_features], pd.get_dummies(df[&quot;City&quot;], prefix=&quot;City&quot;, dtype=float)],
+    axis=1,
+)
+feature_names = list(X.columns)
+
+print(f&quot;Features used ({len(feature_names)}):&quot;)
+for name in feature_names:
+    print(f&quot;  {name}&quot;)</code></pre></details>
+<pre class="output">Features used (8):
+  Quantity
+  Unit_Price
+  Total_Sales
+  City_Bangalore
+  City_Chennai
+  City_Delhi
+  City_Hyderabad
+  City_Mumbai</pre></section><section class="card"><h2 id="pca-4-standardize-the-data-pca-is-sensitive-to-scale">4. Standardize the data (PCA is sensitive to scale)</h2>
+<details class="code"><summary>Show code</summary><pre><code>scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+print(&quot;Data standardized (mean = 0, std = 1).&quot;)</code></pre></details>
+<pre class="output">Data standardized (mean = 0, std = 1).</pre></section><section class="card"><h2 id="pca-5-pca-from-scratch-covariance-matrix-eigen-decomposition">5. PCA from scratch (Covariance matrix + Eigen decomposition)</h2>
+<h3>Covariance matrix</h3>
+<details class="code"><summary>Show code</summary><pre><code>cov_matrix = np.cov(X_scaled, rowvar=False)
+pd.DataFrame(cov_matrix, index=feature_names, columns=feature_names).round(3)</code></pre></details>
+<div class="table-wrap"><div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Quantity</th>
+      <th>Unit_Price</th>
+      <th>Total_Sales</th>
+      <th>City_Bangalore</th>
+      <th>City_Chennai</th>
+      <th>City_Delhi</th>
+      <th>City_Hyderabad</th>
+      <th>City_Mumbai</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Quantity</th>
+      <td>1.002</td>
+      <td>-0.008</td>
+      <td>0.637</td>
+      <td>-0.041</td>
+      <td>-0.017</td>
+      <td>0.038</td>
+      <td>-0.023</td>
+      <td>0.034</td>
+    </tr>
+    <tr>
+      <th>Unit_Price</th>
+      <td>-0.008</td>
+      <td>1.002</td>
+      <td>0.679</td>
+      <td>0.146</td>
+      <td>0.022</td>
+      <td>-0.042</td>
+      <td>-0.025</td>
+      <td>-0.080</td>
+    </tr>
+    <tr>
+      <th>Total_Sales</th>
+      <td>0.637</td>
+      <td>0.679</td>
+      <td>1.002</td>
+      <td>0.080</td>
+      <td>-0.005</td>
+      <td>-0.005</td>
+      <td>-0.026</td>
+      <td>-0.035</td>
+    </tr>
+    <tr>
+      <th>City_Bangalore</th>
+      <td>-0.041</td>
+      <td>0.146</td>
+      <td>0.080</td>
+      <td>1.002</td>
+      <td>-0.216</td>
+      <td>-0.224</td>
+      <td>-0.203</td>
+      <td>-0.242</td>
+    </tr>
+    <tr>
+      <th>City_Chennai</th>
+      <td>-0.017</td>
+      <td>0.022</td>
+      <td>-0.005</td>
+      <td>-0.216</td>
+      <td>1.002</td>
+      <td>-0.266</td>
+      <td>-0.241</td>
+      <td>-0.287</td>
+    </tr>
+    <tr>
+      <th>City_Delhi</th>
+      <td>0.038</td>
+      <td>-0.042</td>
+      <td>-0.005</td>
+      <td>-0.224</td>
+      <td>-0.266</td>
+      <td>1.002</td>
+      <td>-0.250</td>
+      <td>-0.297</td>
+    </tr>
+    <tr>
+      <th>City_Hyderabad</th>
+      <td>-0.023</td>
+      <td>-0.025</td>
+      <td>-0.026</td>
+      <td>-0.203</td>
+      <td>-0.241</td>
+      <td>-0.250</td>
+      <td>1.002</td>
+      <td>-0.269</td>
+    </tr>
+    <tr>
+      <th>City_Mumbai</th>
+      <td>0.034</td>
+      <td>-0.080</td>
+      <td>-0.035</td>
+      <td>-0.242</td>
+      <td>-0.287</td>
+      <td>-0.297</td>
+      <td>-0.269</td>
+      <td>1.002</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<h3>Eigenvalues and explained variance</h3>
+<details class="code"><summary>Show code</summary><pre><code>eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
+# One-hot City columns always sum to 1, so one eigenvalue is ~0 (tiny negatives from rounding)
+eigenvalues = np.clip(eigenvalues, 0, None)
+order = np.argsort(eigenvalues)[::-1]
+eigenvalues = eigenvalues[order]
+eigenvectors = eigenvectors[:, order]
+
+explained_ratio = eigenvalues / eigenvalues.sum()
+cumulative_ratio = np.cumsum(explained_ratio)
+
+pc_names = [f&quot;PC{i + 1}&quot; for i in range(len(eigenvalues))]
+
+print(f&quot;  {&#x27;PC&#x27;:&lt;5} {&#x27;Eigenvalue&#x27;:&gt;12} {&#x27;Explained&#x27;:&gt;12} {&#x27;Cumulative&#x27;:&gt;12}&quot;)
+for name, ev, ratio, cum in zip(pc_names, eigenvalues, explained_ratio, cumulative_ratio):
+    print(f&quot;  {name:&lt;5} {ev:&gt;12.4f} {ratio:&gt;12.4f} {cum:&gt;12.4f}&quot;)
+
+n_components = int(np.searchsorted(cumulative_ratio, 0.90) + 1)
+print(f&quot;\nComponents needed to keep at least 90% variance: {n_components}&quot;)
+
+X_pca_manual = X_scaled @ eigenvectors[:, :n_components]</code></pre></details>
+<pre class="output">  PC      Eigenvalue    Explained   Cumulative
+  PC1         1.9521       0.2435       0.2435
+  PC2         1.3291       0.1658       0.4093
+  PC3         1.2889       0.1608       0.5701
+  PC4         1.2435       0.1551       0.7252
+  PC5         1.2178       0.1519       0.8772
+  PC6         0.9176       0.1145       0.9916
+  PC7         0.0670       0.0084       1.0000
+  PC8         0.0000       0.0000       1.0000
+
+Components needed to keep at least 90% variance: 6</pre>
+<h3>Graph: Scree plot (explained variance)</h3>
+<details class="code"><summary>Show code</summary><pre><code>x_pos = np.arange(1, len(eigenvalues) + 1)
+plt.figure(figsize=(9, 5))
+plt.bar(
+    x_pos,
+    explained_ratio,
+    color=&quot;steelblue&quot;,
+    edgecolor=&quot;black&quot;,
+    alpha=0.85,
+    label=&quot;Individual&quot;,
+)
+plt.step(
+    x_pos,
+    cumulative_ratio,
+    where=&quot;mid&quot;,
+    color=&quot;darkorange&quot;,
+    linewidth=2,
+    label=&quot;Cumulative&quot;,
+)
+plt.axhline(0.90, color=&quot;red&quot;, linestyle=&quot;--&quot;, linewidth=1, label=&quot;90% threshold&quot;)
+plt.xticks(x_pos, pc_names)
+plt.xlabel(&quot;Principal Component&quot;)
+plt.ylabel(&quot;Explained Variance Ratio&quot;)
+plt.title(&quot;PCA Scree Plot&quot;)
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()</code></pre></details>
+<figure><img src="images/pca_fig1.png" alt="Figure 1" loading="lazy"></figure></section><section class="card"><h2 id="pca-6-pca-using-scikit-learn-verification">6. PCA using scikit-learn (verification)</h2>
+<details class="code"><summary>Show code</summary><pre><code>pca = PCA(n_components=n_components)
+X_pca = pca.fit_transform(X_scaled)
+
+print(&quot;Explained variance ratio:&quot;)
+for name, ratio in zip(pc_names, pca.explained_variance_ratio_):
+    print(f&quot;  {name}: {ratio:.4f}&quot;)
+print(f&quot;Total variance retained: {pca.explained_variance_ratio_.sum():.4f}&quot;)
+
+# Eigenvector signs are arbitrary, so compare absolute values
+match = np.allclose(np.abs(X_pca), np.abs(X_pca_manual), atol=1e-6)
+print(f&quot;\nManual PCA matches scikit-learn PCA: {match}&quot;)</code></pre></details>
+<pre class="output">Explained variance ratio:
+  PC1: 0.2435
+  PC2: 0.1658
+  PC3: 0.1608
+  PC4: 0.1551
+  PC5: 0.1519
+  PC6: 0.1145
+Total variance retained: 0.9916
+
+Manual PCA matches scikit-learn PCA: True</pre>
+<h3>Principal component loadings (feature contribution)</h3>
+<details class="code"><summary>Show code</summary><pre><code>loadings = pd.DataFrame(
+    pca.components_.T,
+    index=feature_names,
+    columns=pc_names[:n_components],
+)
+
+print(&quot;Top contributing feature for each component:&quot;)
+for pc in loadings.columns:
+    top = loadings[pc].abs().idxmax()
+    print(f&quot;  {pc}: {top} ({loadings.loc[top, pc]:.4f})&quot;)
+
+loadings.round(4)</code></pre></details>
+<pre class="output">Top contributing feature for each component:
+  PC1: Total_Sales (0.6970)
+  PC2: City_Mumbai (0.7501)
+  PC3: City_Delhi (0.8456)
+  PC4: City_Chennai (0.7488)
+  PC5: City_Hyderabad (0.6748)
+  PC6: Unit_Price (0.6238)</pre>
+<div class="table-wrap"><div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PC1</th>
+      <th>PC2</th>
+      <th>PC3</th>
+      <th>PC4</th>
+      <th>PC5</th>
+      <th>PC6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Quantity</th>
+      <td>0.4545</td>
+      <td>0.3193</td>
+      <td>0.1461</td>
+      <td>0.0979</td>
+      <td>0.2451</td>
+      <td>-0.6041</td>
+    </tr>
+    <tr>
+      <th>Unit_Price</th>
+      <td>0.5253</td>
+      <td>-0.1927</td>
+      <td>-0.1218</td>
+      <td>-0.0639</td>
+      <td>-0.1101</td>
+      <td>0.6238</td>
+    </tr>
+    <tr>
+      <th>Total_Sales</th>
+      <td>0.6970</td>
+      <td>0.0795</td>
+      <td>0.0124</td>
+      <td>0.0105</td>
+      <td>0.0906</td>
+      <td>0.0411</td>
+    </tr>
+    <tr>
+      <th>City_Bangalore</th>
+      <td>0.1513</td>
+      <td>-0.3340</td>
+      <td>-0.2287</td>
+      <td>-0.3291</td>
+      <td>-0.6063</td>
+      <td>-0.4166</td>
+    </tr>
+    <tr>
+      <th>City_Chennai</th>
+      <td>0.0044</td>
+      <td>-0.3725</td>
+      <td>-0.2205</td>
+      <td>0.7488</td>
+      <td>0.2142</td>
+      <td>-0.0429</td>
+    </tr>
+    <tr>
+      <th>City_Delhi</th>
+      <td>-0.0076</td>
+      <td>0.0606</td>
+      <td>0.8456</td>
+      <td>0.0656</td>
+      <td>-0.1938</td>
+      <td>0.1628</td>
+    </tr>
+    <tr>
+      <th>City_Hyderabad</th>
+      <td>-0.0535</td>
+      <td>-0.1949</td>
+      <td>-0.0324</td>
+      <td>-0.5592</td>
+      <td>0.6748</td>
+      <td>0.0361</td>
+    </tr>
+    <tr>
+      <th>City_Mumbai</th>
+      <td>-0.0760</td>
+      <td>0.7501</td>
+      <td>-0.3829</td>
+      <td>0.0156</td>
+      <td>-0.1148</td>
+      <td>0.2024</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<h3>Graph: loadings heatmap</h3>
+<details class="code"><summary>Show code</summary><pre><code>fig, ax = plt.subplots(figsize=(1.2 * n_components + 4, 5))
+im = ax.imshow(loadings.values, cmap=&quot;coolwarm&quot;, vmin=-1, vmax=1, aspect=&quot;auto&quot;)
+ax.set_xticks(range(n_components), loadings.columns)
+ax.set_yticks(range(len(feature_names)), feature_names)
+for i in range(len(feature_names)):
+    for j in range(n_components):
+        ax.text(j, i, f&quot;{loadings.values[i, j]:.2f}&quot;, ha=&quot;center&quot;, va=&quot;center&quot;, fontsize=9)
+fig.colorbar(im, ax=ax)
+ax.set_title(&quot;PCA Loadings (feature contribution to each component)&quot;)
+plt.tight_layout()
+plt.show()</code></pre></details>
+<figure><img src="images/pca_fig2.png" alt="Figure 2" loading="lazy"></figure></section><section class="card"><h2 id="pca-7-transformed-data-and-reconstruction-error">7. Transformed data and reconstruction error</h2>
+<details class="code"><summary>Show code</summary><pre><code>print(f&quot;Original shape:    {X_scaled.shape}&quot;)
+print(f&quot;Transformed shape: {X_pca.shape}&quot;)
+
+X_reconstructed = pca.inverse_transform(X_pca)
+recon_error = np.mean((X_scaled - X_reconstructed) ** 2)
+print(f&quot;Reconstruction error (MSE, standardized units): {recon_error:.4f}&quot;)
+
+pca_df = pd.DataFrame(np.round(X_pca, 4), columns=pc_names[:n_components])
+pca_df.insert(0, &quot;Category&quot;, df[&quot;Category&quot;].values)
+print(&quot;\nTransformed data (first 10 rows):&quot;)
+pca_df.head(10)</code></pre></details>
+<pre class="output">Original shape:    (500, 8)
+Transformed shape: (500, 6)
+Reconstruction error (MSE, standardized units): 0.0084
+
+Transformed data (first 10 rows):</pre>
+<div class="table-wrap"><div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Category</th>
+      <th>PC1</th>
+      <th>PC2</th>
+      <th>PC3</th>
+      <th>PC4</th>
+      <th>PC5</th>
+      <th>PC6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Electronics</td>
+      <td>-1.3576</td>
+      <td>-1.0838</td>
+      <td>-0.3196</td>
+      <td>-1.6158</td>
+      <td>1.2939</td>
+      <td>0.9687</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Accessories</td>
+      <td>-2.1705</td>
+      <td>-0.3079</td>
+      <td>1.9228</td>
+      <td>0.0347</td>
+      <td>-0.8754</td>
+      <td>0.6723</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Electronics</td>
+      <td>1.1950</td>
+      <td>2.2766</td>
+      <td>-0.6654</td>
+      <td>0.1773</td>
+      <td>0.1851</td>
+      <td>-0.4111</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Accessories</td>
+      <td>-1.4661</td>
+      <td>-0.7105</td>
+      <td>-0.1219</td>
+      <td>-1.4985</td>
+      <td>1.5503</td>
+      <td>0.0552</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Accessories</td>
+      <td>-0.2568</td>
+      <td>-0.3890</td>
+      <td>-0.3143</td>
+      <td>-0.7374</td>
+      <td>-1.3189</td>
+      <td>-2.7321</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Electronics</td>
+      <td>1.3054</td>
+      <td>1.1653</td>
+      <td>-1.2452</td>
+      <td>-0.1713</td>
+      <td>-0.5882</td>
+      <td>2.2396</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Electronics</td>
+      <td>-1.3582</td>
+      <td>1.1010</td>
+      <td>-1.1676</td>
+      <td>-0.1581</td>
+      <td>-0.7626</td>
+      <td>1.5238</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Accessories</td>
+      <td>-0.9382</td>
+      <td>0.1213</td>
+      <td>2.0936</td>
+      <td>0.1567</td>
+      <td>-0.5154</td>
+      <td>0.0626</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Accessories</td>
+      <td>-1.0876</td>
+      <td>-0.3659</td>
+      <td>0.0407</td>
+      <td>-1.3937</td>
+      <td>1.8098</td>
+      <td>-0.6329</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Electronics</td>
+      <td>0.8168</td>
+      <td>-1.0160</td>
+      <td>-0.6832</td>
+      <td>-0.9517</td>
+      <td>-1.7052</td>
+      <td>-0.9063</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></section><section class="card"><h2 id="pca-8-graph-data-projected-onto-pc1-and-pc2">8. Graph: data projected onto PC1 and PC2</h2>
+<details class="code"><summary>Show code</summary><pre><code>pca_2d = PCA(n_components=2)
+X_2d = pca_2d.fit_transform(X_scaled)
+
+plt.figure(figsize=(9, 6))
+styles = {
+    &quot;Electronics&quot;: {&quot;color&quot;: &quot;steelblue&quot;, &quot;marker&quot;: &quot;o&quot;},
+    &quot;Accessories&quot;: {&quot;color&quot;: &quot;darkorange&quot;, &quot;marker&quot;: &quot;s&quot;},
+}
+for category, style in styles.items():
+    mask = (df[&quot;Category&quot;] == category).values
+    plt.scatter(
+        X_2d[mask, 0],
+        X_2d[mask, 1],
+        label=category,
+        color=style[&quot;color&quot;],
+        marker=style[&quot;marker&quot;],
+        edgecolor=&quot;black&quot;,
+        s=40,
+        alpha=0.7,
+    )
+plt.xlabel(f&quot;PC1 ({pca_2d.explained_variance_ratio_[0] * 100:.1f}% variance)&quot;)
+plt.ylabel(f&quot;PC2 ({pca_2d.explained_variance_ratio_[1] * 100:.1f}% variance)&quot;)
+plt.title(&quot;PCA: Projection onto First Two Principal Components&quot;)
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()</code></pre></details>
+<figure><img src="images/pca_fig3.png" alt="Figure 3" loading="lazy"></figure></section>
+</main>
+<footer class="site-footer">Unit 3 Mini Project &middot; Retail Sales Insights Using Clustering and PCA</footer>
+</body>
+</html>
