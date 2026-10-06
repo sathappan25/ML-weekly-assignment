@@ -85,6 +85,34 @@ centers = scaler.inverse_transform(kmeans.cluster_centers_)
 print("\nCluster centers (original units):")
 print(pd.DataFrame(centers, columns=features).round(2).to_string())
 
+print("\nOpening graph: K-Means clusters...")
+plt.figure(figsize=(9, 6))
+plt.scatter(
+    df["Unit_Price"],
+    df["Quantity"],
+    c=kmeans_labels,
+    cmap="viridis",
+    edgecolor="black",
+    s=40,
+    alpha=0.8,
+)
+plt.scatter(
+    centers[:, 1],
+    centers[:, 0],
+    color="red",
+    marker="X",
+    s=250,
+    edgecolor="black",
+    label="Centroids",
+)
+plt.xlabel("Unit_Price")
+plt.ylabel("Quantity")
+plt.title(f"K-Means Clustering (k = {best_k}): Unit_Price vs Quantity")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
 # --------------------------------------------------
 # 5. Gaussian Mixture Model (mixture of Gaussians)
 # --------------------------------------------------
@@ -119,6 +147,34 @@ prob_df.insert(0, "Unit_Price", df["Unit_Price"].values)
 prob_df.insert(0, "Quantity", df["Quantity"].values)
 print(prob_df.head(10).to_string(index=False))
 
+print("\nOpening graph: Gaussian Mixture clusters...")
+plt.figure(figsize=(9, 6))
+plt.scatter(
+    df["Unit_Price"],
+    df["Quantity"],
+    c=gmm_labels,
+    cmap="viridis",
+    edgecolor="black",
+    s=40,
+    alpha=0.8,
+)
+plt.scatter(
+    gmm_means[:, 1],
+    gmm_means[:, 0],
+    color="red",
+    marker="X",
+    s=250,
+    edgecolor="black",
+    label="Gaussian Means",
+)
+plt.xlabel("Unit_Price")
+plt.ylabel("Quantity")
+plt.title(f"Gaussian Mixture Model ({best_k} components): Unit_Price vs Quantity")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
 # --------------------------------------------------
 # 6. Hierarchical (Agglomerative) clustering
 # --------------------------------------------------
@@ -136,6 +192,24 @@ dendrogram(linkage_matrix, truncate_mode="lastp", p=30, leaf_rotation=90)
 plt.xlabel("Sample index (or cluster size)")
 plt.ylabel("Distance")
 plt.title("Hierarchical Clustering Dendrogram (Ward linkage)")
+plt.tight_layout()
+plt.show()
+
+print("\nOpening graph: Hierarchical clusters...")
+plt.figure(figsize=(9, 6))
+plt.scatter(
+    df["Unit_Price"],
+    df["Quantity"],
+    c=hier_labels,
+    cmap="viridis",
+    edgecolor="black",
+    s=40,
+    alpha=0.8,
+)
+plt.xlabel("Unit_Price")
+plt.ylabel("Quantity")
+plt.title(f"Hierarchical Clustering (Ward, k = {best_k}): Unit_Price vs Quantity")
+plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
@@ -175,49 +249,3 @@ print("  Quantity=10, Unit_Price=20000")
 print(f"  K-Means cluster:          {kmeans.predict(sample_scaled)[0]}")
 print(f"  Gaussian Mixture cluster: {gmm.predict(sample_scaled)[0]}")
 print(f"  GMM probabilities:        {np.round(gmm.predict_proba(sample_scaled)[0], 4)}")
-
-# --------------------------------------------------
-# 9. Graph: clusters from all three algorithms
-# --------------------------------------------------
-print("\nOpening graph: Cluster results of all three algorithms...")
-
-fig, axes = plt.subplots(1, 3, figsize=(16, 5))
-for ax, (name, labels) in zip(axes, results.items()):
-    ax.scatter(
-        df["Unit_Price"],
-        df["Quantity"],
-        c=labels,
-        cmap="viridis",
-        edgecolor="black",
-        s=35,
-        alpha=0.8,
-    )
-    ax.set_xlabel("Unit_Price")
-    ax.set_ylabel("Quantity")
-    ax.set_title(name)
-    ax.grid(True, alpha=0.3)
-
-axes[0].scatter(
-    centers[:, 1],
-    centers[:, 0],
-    color="red",
-    marker="X",
-    s=200,
-    edgecolor="black",
-    label="Centroids",
-)
-axes[0].legend()
-axes[1].scatter(
-    gmm_means[:, 1],
-    gmm_means[:, 0],
-    color="red",
-    marker="X",
-    s=200,
-    edgecolor="black",
-    label="Gaussian Means",
-)
-axes[1].legend()
-
-plt.suptitle("Clustering: Unit_Price vs Quantity")
-plt.tight_layout()
-plt.show()
