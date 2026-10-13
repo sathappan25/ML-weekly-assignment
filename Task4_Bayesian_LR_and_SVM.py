@@ -58,6 +58,14 @@ def print_eval_block(name, y_true, y_pred, target_names):
     return acc, cm
 
 
+def posterior_summary(idata, var_names):
+    """az.summary with a 94% interval (ArviZ 1.x uses ci_prob, ArviZ 0.x uses hdi_prob)."""
+    try:
+        return az.summary(idata, var_names=var_names, ci_prob=0.94)
+    except TypeError:
+        return az.summary(idata, var_names=var_names, hdi_prob=0.94)
+
+
 def main():
     # --------------------------------------------------
     # 1. Load data
@@ -170,6 +178,11 @@ def main():
 
     print("\nRaw features used: Quantity, Unit_Price, City")
     print("City will be one-hot encoded (no artificial city ordering).")
+    print(
+        "The first city is dropped as the reference category, because the "
+        "model already has an intercept (keeping every city column would make "
+        "the intercept and city effects non-identifiable)."
+    )
 
     # --------------------------------------------------
     # 4. Stratified train/test split
@@ -187,7 +200,7 @@ def main():
 
     # --------------------------------------------------
     # 5. Preprocessing (fit on TRAIN only — no leakage)
-    # StandardScaler for numeric + OneHotEncoder for City
+    # StandardScaler for numeric + OneHotEncoder for City (first city dropped)
     # --------------------------------------------------
     numeric_features = ["Quantity", "Unit_Price"]
     categorical_features = ["City"]
@@ -197,7 +210,7 @@ def main():
             ("num", StandardScaler(), numeric_features),
             (
                 "cat",
-                OneHotEncoder(handle_unknown="ignore", sparse_output=False),
+                OneHotEncoder(drop="first", handle_unknown="ignore", sparse_output=False),
                 categorical_features,
             ),
         ]
@@ -207,12 +220,13 @@ def main():
     X_test_proc = np.asarray(preprocessor.transform(X_test), dtype=float)
 
     ohe = preprocessor.named_transformers_["cat"]
-    city_names = [f"City_{c}" for c in ohe.categories_[0]]
+    city_names = list(ohe.get_feature_names_out(categorical_features))
     feature_names = numeric_features + city_names
 
     print("\nProcessed feature columns:")
     for name in feature_names:
         print(f"  {name}")
+    print(f"  (reference city: {ohe.categories_[0][0]})")
 
     y_train_np = y_train.to_numpy().astype(int)
     y_test_np = y_test.to_numpy().astype(int)
@@ -225,6 +239,7 @@ def main():
     print("\n" + "-" * 60)
     print("1. Bayesian Logistic Regression (PyMC)")
     print("-" * 60)
+    print(f"Environment: PyMC {pm.__version__}, ArviZ {az.__version__}")
     print("Sampling posterior (this may take a minute)...")
 
     coords = {"feature": feature_names}
@@ -246,7 +261,7 @@ def main():
         idata = pm.sample(
             draws=1000,
             tune=1000,
-            chains=2,
+            chains=4,
             cores=1,
             target_accept=0.9,
             random_seed=42,
@@ -255,8 +270,22 @@ def main():
         )
 
     print("\nPosterior summary (mean and 94% credible intervals):")
-    summary = az.summary(idata, var_names=["intercept", "betas"], ci_prob=0.94)
+    summary = posterior_summary(idata, ["intercept", "betas"])
     print(summary.to_string())
+
+    r_hat_max = pd.to_numeric(summary["r_hat"], errors="coerce").max()
+    ess_min = pd.to_numeric(summary["ess_bulk"], errors="coerce").min()
+    n_divergent = int(np.asarray(idata.sample_stats["diverging"]).sum())
+    converged = r_hat_max <= 1.01 and ess_min >= 400 and n_divergent == 0
+
+    print("\nConvergence checks:")
+    print(f"  Max r_hat:     {r_hat_max:.3f}  (should be <= 1.01)")
+    print(f"  Min bulk ESS:  {ess_min:.0f}  (should be >= 400)")
+    print(f"  Divergences:   {n_divergent}  (should be 0)")
+    if converged:
+        print("  Result: the sampler converged, so the posterior can be trusted.")
+    else:
+        print("  Result: WARNING - the sampler did not clearly converge; do not trust these results yet.")
 
     # --------------------------------------------------
     # 7. Posterior prediction on test set (genuine averaging)
@@ -332,7 +361,7 @@ def main():
     print("City: Chennai")
     print("\nBayesian Logistic Regression:")
     print(f"Predicted Category: {code_to_category[pred_blr_code]}")
-    print(f"Probability: {prob_sample:.4f}")
+    print(f"P({code_to_category[1]}): {prob_sample:.4f}")
     print("\nSVM:")
     print(f"Predicted Category: {code_to_category[pred_svm_code]}")
 
